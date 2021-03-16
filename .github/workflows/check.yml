@@ -1,27 +1,9 @@
 name: check
 on:
   pull_request:
-    types: [opened]
-  issue_comment:
-    types: [created, edited]
+    types: [opened, labeled]
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: khan/pull-request-comment-trigger@master
-        id: check
-        with:
-          trigger: '@deploy'
-          reaction: rocket
-        env:
-          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-
-      - name: check trigger
-        if: steps.check.outputs.triggered == 'false'
-        run: exit 1
-
   deploy:
-    needs: check
     runs-on: ubuntu-latest
     steps:
       - name: get upstream branch
